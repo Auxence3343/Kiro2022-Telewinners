@@ -1,6 +1,15 @@
 import loadinstance
 from classes import *
 
+
+
+
+busyOperators = []
+machines = []
+operators = []
+
+
+
 def solve(file, output):
     instance = loadinstance.load_instance(file)
     parameters = instance["parameters"]
@@ -26,8 +35,15 @@ def solve(file, output):
     tasks_dict = instance["tasks"]
     tasks = []
     for task in tasks_dict:
-        tasks.append(TaskClass(task['task'], task["processing_time"], task["machine"]))
+        t = TaskClass(task['task'], task["processing_time"], task["machines"], False, None)
+        tasks.append(t)
     
+
+    for i in range(nb_machines):
+        machines.append(MachineClass(i+1))
+    for i in range(nb_operators):
+        operators.append(OperatorClass(i+1))        
+
 
 solve("sujet/tiny.json", "solution/tiny.json")
 solve("sujet/medium.json", "solution/medium.json")
