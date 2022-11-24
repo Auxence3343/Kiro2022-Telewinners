@@ -52,7 +52,7 @@ def decision(time, jobs, tasks, machines, operators):
         best_task = None
         best_cost = -1000000
         for task in free_tasks:
-            cost_task = cost(task, t)
+            cost_task = cost(task, time)
             if cost_task > best_cost:
                 best_task = task
                 best_cost = cost_task
