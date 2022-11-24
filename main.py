@@ -25,8 +25,11 @@ def solve(file, output):
 
     tasks_dict = instance["tasks"]
     tasks = []
-    for t in tasks_dict:
-        tasks.append(TaskClass(t['task'], task["processing_time"], task["machine"]))
+    for task in tasks_dict:
+        tasks.append(TaskClass(task['task'], task["processing_time"], task["machine"]))
     
 
 solve("sujet/tiny.json", "solution/tiny.json")
+solve("sujet/medium.json", "solution/medium.json")
+solve("sujet/large.json", "solution/large.json")
+solve("sujet/huge.json", "solution/huge.json")
