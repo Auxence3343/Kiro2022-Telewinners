@@ -1,4 +1,5 @@
 import loadinstance
+from classes import *
 
 def solve(file, output):
     instance = loadinstance.load_instance(file)
@@ -18,7 +19,14 @@ def solve(file, output):
     print("The tardiness penalty is {} + {} per day".format(alpha, beta))
 
     jobs_dict = instance["jobs"]
-    for job in jobs:
-        print(job)
+    jobs= []
+    for job in jobs_dict:
+        jobs.append(JobClass(job["job"], job["sequence"], job["release_date"], job["due_date"], job["weight"]))
+
+    tasks_dict = instance["tasks"]
+    tasks = []
+    for t in tasks_dict:
+        tasks.append(TaskClass(t['task'], task["processing_time"], task["machine"]))
+    
 
 solve("sujet/tiny.json", "solution/tiny.json")
