@@ -139,13 +139,21 @@ def solve(file, output):
 
     operations_list = [] # required output
 
-    
-
-
     for time in range(2000): #boucle temporelle
         operations_list.extend(decision(time, jobs, tasks, machines, operators))
-
-
+    
+    output_list = []
+    for i in range(len(operations_list)):
+        for operation in operations_list:
+            if operation[2].task == i:
+                output.append({
+                    "task":operation[1],
+                    "start":operation[0],
+                    "machine":operation[2],
+                    "operator":operation[3],
+                })
+    with open(output, "w") as o:
+        o.write(json.dump(output_list))
 
 
 
