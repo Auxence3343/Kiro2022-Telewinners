@@ -13,14 +13,14 @@ def cost(task): #TODO
     return 0
 
 
-def free_machines(t):
+def free_machines(t, machines):
     res = []
     for m in machines:
         if m.is_free():
             res.append(m)
     return res
 
-def free_operators(t):
+def free_operators(t, operators):
     res = []
     for o in operators:
         if o.is_free(t):
@@ -28,15 +28,26 @@ def free_operators(t):
     return res
 
 
+def free_tasks(t, tasks):
+    res = []
+    for i in tasks:
+        if i.is_free(t):
+            free_tasks.append(i)
+    return res
+
 
 
 def decision(time, jobs, tasks, machines, operators):
     """prend une décision à l'instant t"""
     return_sequence = []
-    free_tasks = []
-    free_machines = []
-    free_operators = []
     
+    free_tasks = free_tasks(time, tasks)
+    free_machines = free_machines(time, machines)
+    free_operators = free_operators(time, operators)
+    
+ 
+
+
     for _ in range(len(free_tasks)):
         best_task = None
         best_cost = -1000000
@@ -91,15 +102,28 @@ def solve(file, output):
         operators.append(OperatorClass(i+1))      
 
 
-    jobs= []
-    for job in jobs_dict:
-        jobs.append(JobClass(job["job"], job["sequence"], job["release_date"], job["due_date"], job["weight"]))
-
-    tasks_dict = instance["tasks"]
+    jobs = []
     tasks = []
+
+
     for task in tasks_dict:
         t = TaskClass(task['task'], task["processing_time"], task["machines"], False, None)
         tasks.append(t)
+        
+
+
+    for job in jobs_dict:
+        j = JobClass(job["job"], job["sequence"], job["release_date"], job["due_date"], job["weight"])
+        jobs.append(j)
+        # on met a jour les tasks à chaque fois en bouclant syr les sequence des taches, séquence
+        for s in j.sequence:
+            tasks[s-1].job = j
+        
+
+
+
+    tasks_dict = instance["tasks"]
+
 
 
     operations_list = [] # required output

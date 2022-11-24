@@ -14,8 +14,21 @@ class TaskClass:
         self.machines = machines
         self.started = started
         self.end_date = end_date
+        self.job = None
 
 
+    def end_in_passt(self, t):
+        return self.end_date < t
+
+    def is_free(self, t, tasks):
+        seq = self.job.sequence
+        if self.started: 
+            return False
+        for i in seq:
+            task2 = tasks[i-1]
+            if not ( task2.started and task2.end_in_passt() ):
+                return False
+        return True
 
 class MachineClass:
     def _init_(self, machine_id):
