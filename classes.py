@@ -15,9 +15,6 @@ class TaskClass:
         self.started = started
         self.end_date = end_date
 
-    def get_machines():
-        #todo
-        pass
 
 
 class MachineClass:
