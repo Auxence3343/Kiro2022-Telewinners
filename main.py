@@ -9,8 +9,19 @@ machines = []
 operators = []
 
 
-def cost(task): #TODO
-    return 0
+def cost(task, t): #TODO
+    JobTasksId= task.job.sequence 
+    Tfinal = t
+    for el in JobTasksId :
+        if el.task >= task.task :
+            Tfinal += el.processing_time
+    w = task.job.weight
+    d = task.job.due_date 
+    if Tfinal > d:
+        arg1 = 6
+    else :
+        arg1 = 0
+    return w(arg1 + max(Tfinal-d, 0))
 
 
 def free_machines(t):
@@ -41,7 +52,7 @@ def decision(time, jobs, tasks, machines, operators):
         best_task = None
         best_cost = -1000000
         for task in free_tasks:
-            cost_task = cost(task)
+            cost_task = cost(task, t)
             if cost_task > best_cost:
                 best_task = task
                 best_cost = cost_task
