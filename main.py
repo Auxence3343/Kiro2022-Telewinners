@@ -1,6 +1,45 @@
 import loadinstance
 from classes import *
 
+def cost(task): #TODO
+    return 0
+
+def decision(time, jobs, tasks, machines, operators):
+    """prend une décision à l'instant t"""
+    return_sequence = []
+    free_tasks = []
+    free_machines = []
+    free_operators = []
+    
+    for _ in range(len(free_tasks)):
+        best_task = None
+        best_cost = -1000000
+        for task in free_tasks:
+            cost_task = cost(task)
+            if cost_task > best_cost:
+                best_task = task
+                best_cost = cost_task
+        best_machine = None
+        nb_operators = 10000
+        for machine in free_machines:
+            if machine.id in best_task.machines():
+                if (len(best_task.machines[machine.id]["operators"]) < nb_operators):
+                    best_machine = machine
+                    nb_operators = len(machine[operators])
+        
+        best_operator = None
+        nb_machines = 0
+        for operator in free_operators:
+            if operator.id in best_task.machines[best_machine.id]["operators"]:
+                best_operator = operator #TO IMPROVE WHEN WE KNOW THE NB OF MACHINES
+        if (best_task is not None and best_machine is not None and best_operator is not None):
+            return_sequence.append((time, best_task, best_machine, best_operator))
+            free_tasks.remove(best_task)
+            free_machines.remove(best_machine)
+            free_operators.remove(best_operator)
+    return return_sequence
+        
+
 def solve(file, output):
     instance = loadinstance.load_instance(file)
     parameters = instance["parameters"]
@@ -26,8 +65,14 @@ def solve(file, output):
     tasks_dict = instance["tasks"]
     tasks = []
     for task in tasks_dict:
-        tasks.append(TaskClass(task['task'], task["processing_time"], task["machine"]))
-    
+        tasks.append(TaskClass(task['task'], task["processing_time"], task["machines"]))
+
+    machines = []
+
+    operators = []
+    operations_list = [] # required output
+    for time in range(2000): #boucle temporelle
+        operations_list.extend(decision(time, jobs, tasks, machines, operators))
 
 solve("sujet/tiny.json", "solution/tiny.json")
 solve("sujet/medium.json", "solution/medium.json")
