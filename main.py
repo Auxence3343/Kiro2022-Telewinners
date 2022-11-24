@@ -16,4 +16,7 @@ def solve(file, output):
     print("The {} instance contains {} tasks in {} jobs, to complete them, we have {} machines and {} operators. "\
             .format(file, nb_tasks, nb_jobs, nb_machines, nb_operators))
     print("The tardiness penalty is {} + {} per day".format(alpha, beta))
+
+    jobs = instance["jobs"]
+
 solve("sujet/tiny.json", "solution/tiny.json")
